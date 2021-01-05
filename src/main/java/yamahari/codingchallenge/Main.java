@@ -6,8 +6,6 @@ public final class Main {
     private Main() {
     }
 
-    /* utility classes */
-
     /* solve single 0/1 knapsack using dynamic programming */
     private static SingleKnapsackResult singleKnapsack(final Item[] items, final List<Integer> indices, final int c) {
         final SingleKnapsackResult result = new SingleKnapsackResult();
@@ -126,7 +124,7 @@ public final class Main {
         return result;
     }
 
-    /* Compute the optimal solution to the multiple 0/1 knapsack problem */
+    /* Computes the optimal solution to the multiple 0/1 knapsack problem */
     private static MultipleKnapsackResult multipleKnapsack(final int n, final int m, final Item[] items, final int[] cs) {
         final MultipleKnapsackResult result = new MultipleKnapsackResult();
         final List<Stack<Integer>> ss = new ArrayList<>();
@@ -134,7 +132,7 @@ public final class Main {
         int i;
         UpperResult upper;
         LowerResult lower;
-        int UB;
+        int upperBound;
 
         // single knapsack
         if (m == 1) {
@@ -142,10 +140,10 @@ public final class Main {
             for (int j = 0; j < n; ++j) {
                 indices.add(j);
             }
-            final SingleKnapsackResult singleKnapsackResult = singleKnapsack(items, indices, cs[0]);
+            final SingleKnapsackResult singleKnapsack = singleKnapsack(items, indices, cs[0]);
             result.x = new int[m][n];
-            result.x[0] = singleKnapsackResult.x;
-            result.z = singleKnapsackResult.z;
+            result.x[0] = singleKnapsack.x;
+            result.z = singleKnapsack.z;
             return result;
         }
 
@@ -162,7 +160,7 @@ public final class Main {
         result.x = new int[m][n];
         i = 0;
         upper = upper(n, m, items, cs, x, ss, i);
-        UB = upper.U;
+        upperBound = upper.U;
         lower = new LowerResult(); // DUMMY, might wanna check if this gets used accidentally
 
         int step = 2;
@@ -184,7 +182,7 @@ public final class Main {
                                 }
                             }
                         }
-                        if (result.z == UB) {
+                        if (result.z == upperBound) {
                             return result;
                         }
                         if (result.z == upper.U) {
